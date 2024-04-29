@@ -1,14 +1,16 @@
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
-const models = require("./models.js");
 const sequelize = require("sequelize");
 const SequelizeSessionStore = require("express-session-sequelize")(
   session.Store
 );
-require("dotenv").config();
-const PORT = process.env.PORT || 4000;
+const models = require("./models.js");
+
+const PORT = process.env.PORT;
 const SECRET = process.env.SECRET;
 const SALT_ROUNDS = 10;
 const app = express();
@@ -67,7 +69,7 @@ app.get(
   "/workspaces/:workspaceId/bills",
   loginRequired,
   async function (req, res) {
-    const month = req.query.month ? new Date(req.query.month) : new Date();
+    const month = req.query.month ? new Date(req.query.month) : null;
     const workspace = await models.Workspace.findOne({
       group: ["apiTokens.id", "apiTokens->services.id"],
       where: { id: req.params.workspaceId },
@@ -82,7 +84,9 @@ app.get(
               attributes: {
                 include: [
                   [
-                    sequelize.literal(`SUM(\`apiTokens->services->bills\`.usageDurationInMs) / 1000`),
+                    sequelize.literal(
+                      `SUM(\`apiTokens->services->bills\`.usageDurationInMs) / 1000`
+                    ),
                     "time",
                   ],
                 ],
@@ -123,6 +127,12 @@ app
     }
     res.render("pages/login", { error: "Логин или пароль не верные" });
   });
+app
+  .route("/workspaces/creation")
+  .get(loginRequired, function (req, res) {
+    res.render("pages/workspaces/create");
+  })
+  .post(loginRequired, function (req, res) {});
 app
   .route("/register")
   .get(function (req, res) {
@@ -241,7 +251,7 @@ async function importData() {
 }
 
 (async () => {
-  // await models.sequelize.sync({force: true});
+  // await models.sequelize.sync();
   // await importData();
   app.listen(PORT);
 })();

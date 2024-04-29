@@ -5,3 +5,4 @@
 **/node_modules
 **/.vscode
 module_a/static
+**/.env

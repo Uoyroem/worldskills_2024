@@ -1,13 +1,12 @@
 const { Sequelize, DataTypes, QueryInterface } = require("sequelize");
 const crypto = require("crypto");
-
 const sequelize = new Sequelize({
-  username: "root",
-  password: "GaDe2005LoLi",
-  port: 3306,
-  host: "localhost",
+  username: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  port: process.env.MYSQL_PORT,
+  host: process.env.MYSQL_HOST,
   dialect: "mysql",
-  database: "module_b",
+  database: process.env.MYSQL_DATABASE,
 });
 const User = sequelize.define("User", {
   username: {

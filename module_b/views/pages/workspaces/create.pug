@@ -1,0 +1,14 @@
+extends ../../layout.pug
+
+
+block content 
+    h3 Workspace creation
+    form(action="", method="post") 
+        .mb-1
+            label.form-label(for="workspace-creation-title-input") Enter title 
+            input.form-control#workspace-creation-title-input(type="text", name="title", required=true)
+        .mb-1
+            label.form-label(for="workspace-creation-description-textarea") Enter description 
+            textarea.form-control#workspace-creation-description-textarea(name="description")
+        button(type="submit") Create Workspace
+        
