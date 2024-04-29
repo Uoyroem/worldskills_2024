@@ -1,0 +1,25 @@
+extends ../layout.pug
+
+block content 
+    .row.my-auto
+        .col 
+        .col-sm-9.col-md-7.col-xl-5
+            form.card.shadow#register-form(method="post") 
+                .card-body
+                    .mb-1
+                        label.form-label(for="register-username-input") Имя пользователя
+                        input.form-control#register-username-input(class={"is-invalid": errors && errors["username"]}, type="text", name="username", minlength=2, required=true)
+                        if errors && errors["username"]
+                            .invalid-feedback #{errors["username"]}
+                    .mb-1
+                        label.form-label(for="register-password-input") Пароль
+                        input.form-control.register-password-input#register-password-input(class={"is-invalid": errors && errors["password"]}, type="password", name="password", minlength=4, required=true)
+                    .mb-2
+                        label.form-label(for="register-password-repeat-input") Повторите пароль
+                        input.form-control.register-password-input#register-password-repeat-input(class={"is-invalid": errors && errors["password"]}, type="password", name="password-repeat", minlength=4, required=true)
+                        if errors && errors["password"]
+                            .invalid-feedback #{errors["password"]}
+                .card-footer.d-flex.justify-content-end.align-items-center.gap-2
+                    a(href="/register") У вас уже есть аккаунт? 
+                    button.btn.btn-primary(type="submit") Зарегистрироваться
+        .col

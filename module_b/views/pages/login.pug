@@ -1,0 +1,20 @@
+extends ../layout.pug 
+
+block content 
+    .row.my-auto
+        .col 
+        .col-sm-9.col-md-7.col-xl-5
+            form.card.shadow(action="", method="post") 
+                .card-body
+                    .mb-1 
+                        label.form-label(for="login-username-input") Имя пользователя
+                        input.form-control#login-username-input(class={"is-invalid": error}, type="text", name="username", required=true)
+                    .mb-1 
+                        label.form-label(for="login-password-input") Пароль
+                        input.form-control#login-password-input(class={"is-invalid": error}, type="password", name="password", required=true)
+                    if error
+                        .text-danger #{error}
+                .card-footer.d-flex.justify-content-end.gap-2.align-items-center
+                    a(href="/register") У вас нету аккаунта?
+                    button.btn.btn-primary(type="submit") Войти
+        .col

@@ -1,0 +1,32 @@
+extends ../../../layout.pug 
+
+
+block content 
+    h3 #{workspace.title}
+    form.d-flex.justify-content-end.align-items-center.mb-2.gap-2(method="get") 
+        .form-floating 
+            input.w-auto.form-control#month(type="month", name="month", value=`${month.toISOString().slice(0, 7)}`)
+            label.form-label Select month
+        button.btn.btn-primary Show
+    table.table
+        thead 
+            tr 
+                th(scope="col") Token
+                th(scope="col") Time 
+                th(scope="col") Per sec.
+                th(scope="col") Total
+        tbody.table-group-divider
+            each apiToken in workspace.apiTokens
+                - let services = apiToken.services.filter(service => (service.getDataValue("time") * service.costPerMs).toFixed(2));
+                tr 
+                    th(colspan="4", scope="col") #{apiToken.name}
+                each service in services
+                    tr 
+                        th.ps-4.text-secondary(scope="col") #{service.name}
+                        td #{service.getDataValue("time")} s
+                        td $ #{service.costPerMs}
+                        td $ #{(service.getDataValue("time") * service.costPerMs).toFixed(2)}
+        tfoot 
+            tr 
+                th(scope="row" colspan="3") Total
+                td $ #{workspace.apiTokens.reduce((sum, apiToken) => sum + apiToken.services.reduce((sum, service) => sum + (service.getDataValue("time") * service.costPerMs), 0), 0).toFixed(2)}

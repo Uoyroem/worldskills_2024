@@ -1,0 +1,7 @@
+**/__pycache__
+**/venv
+**/*.egg-info
+**/build
+**/node_modules
+**/.vscode
+module_a/static
